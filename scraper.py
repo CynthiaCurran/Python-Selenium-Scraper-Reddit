@@ -39,11 +39,11 @@ class RedditScraper():
         time.sleep(2)
 
         #enter username
-        self.browser.find_element(by=By.ID, value='login-username').send_keys(username)
+        self.browser.find_element(By.ID, 'login-username').send_keys(username)
         time.sleep(2)
 
         #enter password
-        self.browser.find_element(by=By.ID, value='login-password').send_keys(password)
+        self.browser.find_element(By.ID, 'login-password').send_keys(password)
         time.sleep(2)
 
         #click login button
@@ -75,16 +75,37 @@ class RedditScraper():
     
 
 
-
+    #TBD: Add feedElement selection logic for different feed types and finish img grabbing logic
     def scrapeImageURLs(self, FEED_URL):
         """
         From the selected Reddit feed, scrape the URLs of the posts with images.
         This is to prep them for image scraping later.
         """
-        print(FEED_URL)
+
+        #load reddit feed
+        self.browser.get(FEED_URL)
+        time.sleep(5)
+
+        #TBD: Determine all the different paths to the feed element for different pages
+        #The one currently in use only works for the saved section of the user's account
+        #Unaccounted for cases: Home/Popular feeds, subreddits
+
+        feedElement = ""
+
+        if "/user/" in FEED_URL:  #for any user section
+            feedElement = self.browser.find_element(By.XPATH, "/html/body/shreddit-app/report-flow-provider/div/div[1]/div/main/div[3]")
 
 
-    def folder_write_test(self):
-        os.chdir("./output")
-        with open('test.txt', 'w') as test:
-            test.write("Hello test")
+
+        if feedElement == "" or feedElement is None:
+            raise Exception("Feed not found")
+
+        imageElements = feedElement.find_elements(By.TAG_NAME, 'img')
+        imageURLs = {}
+
+        for i in imageElements:
+            url = i.get_attribute("src")
+            imageURLs[url] = 1
+
+        print(imageURLs)
+        time.sleep(2)
