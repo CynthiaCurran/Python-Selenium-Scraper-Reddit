@@ -5,9 +5,6 @@ from dotenv import load_dotenv, find_dotenv
 
 load_dotenv(find_dotenv())
 
-#Login credentials
-REDDIT_USER = os.getenv("REDDIT_USER")
-REDDIT_PASS = os.getenv("REDDIT_PASS")
 FEED_URL = os.getenv("FEED_URL")    #The reddit page we are downloading images from
 NUM_IMGS = os.getenv("NUM_IMGS")
 

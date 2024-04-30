@@ -26,60 +26,7 @@ class RedditScraper():
         self.browser.close()
 
     def open_browser(self):
-        self.browser = webdriver.Chrome(OPTIONS) #Original instance and info is lost. Reinitialize
-
-
-
-
-    def login(self, username, password):
-        """Log into an account."""
-
-        print("Logging in...")
-
-        self.browser.get("https://www.reddit.com/login/")
-        time.sleep(2)
-
-        #Click login button
-        #self.browser.find_element(by=By.ID, value='login-button').click()
-        time.sleep(2)
-
-        #enter username
-        self.browser.find_element(By.ID, 'login-username').send_keys(username)
-        time.sleep(2)
-
-        #enter password
-        self.browser.find_element(By.ID, 'login-password').send_keys(password)
-        time.sleep(2)
-
-        #click login button
-        #the login button is buried in a few nested shadow roots, so select down until it is visible
-        root = self.browser.find_elements(By.TAG_NAME, "shreddit-overlay-display")
-        root = self.expand_shadow_element_arr(root, 0)
-        root = root.find_element(By.CSS_SELECTOR, "shreddit-signup-drawer")
-        root = self.expand_shadow_element(root)
-        root = root.find_element(By.CSS_SELECTOR, "shreddit-slotter")
-        root = self.expand_shadow_element(root)
-        root = root.find_element(By.CSS_SELECTOR, "button").click()
-        time.sleep(10)  #give time to login
-        self.logged_in = True
-        print('Log In Successful')
-
-    def expand_shadow_element_arr(self, element, index):
-        """
-        Selenium needs to manually find shadow roots to select elements inside them.
-        Returns the shadow element within a certain index of an element.
-        """
-        shadow_root = self.browser.execute_script('return arguments[0][{index}].shadowRoot'.format(index=index), element)
-        return shadow_root
-    
-    def expand_shadow_element(self, element):
-        """
-        Selenium needs to manually find shadow roots to select elements inside them.
-        Returns the shadow element within an element.
-        """
-        shadow_root = self.browser.execute_script('return arguments[0].shadowRoot', element)
-        return shadow_root
-    
+        self.browser = webdriver.Chrome(OPTIONS) #Original instance and info is lost. Reinitialize    
 
 
     #TBD: Add feedElement selection logic for different feed types and finish img grabbing logic
